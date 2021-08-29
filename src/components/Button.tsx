@@ -14,12 +14,21 @@ export default function Button({ mode, style, ...props }: Props) {
         style,
       ]}
       mode={mode}
+      labelStyle={styles.text}
       {...props}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  button: { width: "100%", marginVertical: 10, paddingHorizontal: 2 },
-  text: { fontWeight: "bold", fontSize: 15, lineHeight: 26 },
+  button: {
+    width: "100%",
+    marginVertical: 10,
+    paddingVertical: 2,
+  },
+  text: {
+    fontWeight: "bold",
+    fontSize: 15,
+    lineHeight: 26,
+  },
 });
