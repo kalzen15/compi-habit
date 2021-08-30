@@ -4,7 +4,12 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider } from "react-native-paper";
 import { theme } from "./src/core/theme";
-import { StartScreen } from "./src/screens";
+import {
+  LoginScreen,
+  RegisterScreen,
+  ResetPasswordScreen,
+  StartScreen,
+} from "./src/screens";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +22,12 @@ export default function App() {
           initialRouteName="StartScreen"
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

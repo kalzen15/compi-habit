@@ -8,18 +8,22 @@ import Logo from "../components/Logo";
 import TextInput from "../components/TextInput";
 import { theme } from "../core/theme";
 import { emailValidator } from "../helpers/emailValidator";
+import { nameValidator } from "../helpers/nameValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
 
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+  const [name, setName] = useState({ value: "", error: "" });
 
-  const onLoginPressed = () => {
+  const onSignUpPressed = () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
-    if (emailError || passwordError) {
+    const nameError = nameValidator(name.value);
+    if (emailError || passwordError || nameError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
+      setName({ ...name, error: nameError });
     }
   };
 
@@ -27,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
-      <Header> Welcome back!</Header>
+      <Header>Create Account </Header>
       <TextInput
         label="Email"
         value={email.value}
@@ -47,27 +51,29 @@ const LoginScreen = ({ navigation }) => {
         }}
         secureTextEntry
       />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ResetPasswordScreen")}
-        >
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
-      <Button mode="contained" onPress={onLoginPressed}>
-        Login
+      <TextInput
+        label="Name"
+        value={name.value}
+        error={!!name.error}
+        errorText={name.error}
+        onChangeText={(text) => {
+          setName({ value: text, error: "" });
+        }}
+      />
+      <Button mode="contained" onPress={onSignUpPressed}>
+        Sign Up
       </Button>
       <View style={styles.row}>
-        <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
-          <Text style={styles.link}>Sign Up</Text>
+        <Text>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
+          <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
     </Background>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   row: {
@@ -77,14 +83,5 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: "bold",
     color: theme.colors.primary,
-  },
-  forgotPassword: {
-    width: "100%",
-    alignItems: "flex-end",
-    marginBottom: 24,
-  },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
   },
 });
