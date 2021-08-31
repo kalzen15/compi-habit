@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { signUpUser } from "../api/auth-api";
 import BackButton from "../components/BackButton";
 import Background from "../components/Background";
 import Button from "../components/Button";
@@ -15,8 +16,9 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [name, setName] = useState({ value: "", error: "" });
+  const [loading, setLoading] = useState(false);
 
-  const onSignUpPressed = () => {
+  const onSignUpPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     const nameError = nameValidator(name.value);
@@ -24,7 +26,20 @@ const RegisterScreen = ({ navigation }) => {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
       setName({ ...name, error: nameError });
+      return;
     }
+    setLoading(true);
+    const response = await signUpUser({
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    });
+    if (response.error) {
+      alert(response.error);
+    } else {
+      alert(response.user.displayName);
+    }
+    setLoading(false);
   };
 
   return (
@@ -60,7 +75,7 @@ const RegisterScreen = ({ navigation }) => {
           setName({ value: text, error: "" });
         }}
       />
-      <Button mode="contained" onPress={onSignUpPressed}>
+      <Button loading={loading} mode="contained" onPress={onSignUpPressed}>
         Sign Up
       </Button>
       <View style={styles.row}>

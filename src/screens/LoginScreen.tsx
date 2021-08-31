@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { loginUser } from "../api/auth-api";
 import BackButton from "../components/BackButton";
 import Background from "../components/Background";
 import Button from "../components/Button";
@@ -13,14 +14,26 @@ import { passwordValidator } from "../helpers/passwordValidator";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+  const [loading, setLoading] = useState(false);
 
-  const onLoginPressed = () => {
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     if (emailError || passwordError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
+      return;
     }
+    setLoading(true);
+    const response = await loginUser({
+      email: email.value,
+      password: password.value,
+    });
+
+    if (response.error) {
+      alert(response.error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -54,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.forgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <Button mode="contained" onPress={onLoginPressed}>
+      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
         Login
       </Button>
       <View style={styles.row}>

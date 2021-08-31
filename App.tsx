@@ -6,16 +6,19 @@ import { Provider } from "react-native-paper";
 import { theme } from "./src/core/theme";
 import firebase from "firebase/app";
 import {
+  HomeScreen,
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
+  SplashScreen,
   StartScreen,
 } from "./src/screens";
 import { firebaseConfig } from "./src/core/config";
 
-if (!firebase.app.length) {
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -24,11 +27,13 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName="StartScreen"
+          initialRouteName="SplashScreen"
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
