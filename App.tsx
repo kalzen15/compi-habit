@@ -4,13 +4,18 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider } from "react-native-paper";
 import { theme } from "./src/core/theme";
+import firebase from "firebase/app";
 import {
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
   StartScreen,
 } from "./src/screens";
+import { firebaseConfig } from "./src/core/config";
 
+if (!firebase.app.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 const Stack = createStackNavigator();
 
 export default function App() {
