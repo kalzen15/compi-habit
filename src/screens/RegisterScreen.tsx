@@ -4,6 +4,7 @@ import { signUpUser } from "../api/auth-api";
 import BackButton from "../components/BackButton";
 import Background from "../components/Background";
 import Button from "../components/Button";
+import GoogleLogin from "../components/GoogleLogin";
 import Header from "../components/Header";
 import Logo from "../components/Logo";
 import TextInput from "../components/TextInput";
@@ -78,6 +79,7 @@ const RegisterScreen = ({ navigation }) => {
       <Button loading={loading} mode="contained" onPress={onSignUpPressed}>
         Sign Up
       </Button>
+      <GoogleLogin />
       <View style={styles.row}>
         <Text>Already have an account? </Text>
         <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>

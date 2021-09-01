@@ -1,18 +1,43 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import "firebase/auth";
 import { GoogleLogo } from "../assets/icons";
 import { theme } from "../core/theme";
+import firebase from "firebase/app";
+import * as Google from "expo-google-app-auth";
+import { ANDROID_GOOGLE_CLIENT_ID, IOS_GOOGLE_CLIENT_ID } from "../core/config";
 
 export default function GoogleLogin() {
+  const signInWithGoogle = async () => {
+    try {
+      const result = await Google.logInAsync({
+        clientId:
+          Platform.OS === "android"
+            ? ANDROID_GOOGLE_CLIENT_ID
+            : IOS_GOOGLE_CLIENT_ID,
+        scopes: ["profile", "email"],
+      });
+      if (result.type === "success") {
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken,
+          result.accessToken
+        );
+        await firebase.auth().signInWithCredential(credential);
+      } else {
+        alert("Something went wrong");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.divider}>
         <Text style={styles.dividerText}>Or</Text>
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={signInWithGoogle} style={styles.button}>
           <GoogleLogo />
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
