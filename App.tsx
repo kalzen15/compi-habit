@@ -5,21 +5,28 @@ import { StyleSheet } from "react-native";
 import { Provider } from "react-native-paper";
 import { theme } from "./src/core/theme";
 import firebase from "firebase/app";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import {
   HomeScreen,
   LoginScreen,
+  ProfileScreen,
   RegisterScreen,
   ResetPasswordScreen,
   SplashScreen,
   StartScreen,
 } from "./src/screens";
 import { firebaseConfig } from "./src/core/config";
+import { HomeIcon, ProfileIcon } from "./src/assets/icons";
+import DrawerContent from "./src/components/DrawerContent";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
   return (
@@ -32,7 +39,7 @@ export default function App() {
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="HomeScreen" component={DrawerNavigator} />
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
           <Stack.Screen
             name="ResetPasswordScreen"
@@ -41,6 +48,33 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+  );
+}
+function BottomNavigation() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => <HomeIcon fill={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color }) => <ProfileIcon fill={color} />,
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator drawerContent={DrawerContent}>
+      <Drawer.Screen name="BottomNavigation" component={BottomNavigation} />
+    </Drawer.Navigator>
   );
 }
 
