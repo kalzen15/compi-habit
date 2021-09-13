@@ -73,7 +73,7 @@ function BottomNavigation() {
 function DrawerNavigator() {
   return (
     <Drawer.Navigator drawerContent={DrawerContent}>
-      <Drawer.Screen name="BottomNavigation" component={BottomNavigation} />
+      <Drawer.Screen name="Compi Habit" component={BottomNavigation} />
     </Drawer.Navigator>
   );
 }
